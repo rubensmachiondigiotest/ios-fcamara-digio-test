@@ -1,0 +1,124 @@
+name: DigioApp
+
+options:
+  developmentLanguage: pt-BR
+  
+  deploymentTarget:
+    iOS: 12.0
+
+localPackages:
+ - Packages/AppProtocols
+ - Packages/DesignSystem
+ - Packages/NetworkKit
+
+packages:
+  Mocker:
+    url: https://github.com/rubensmachion/Mocker
+    branch: master
+  SwiftLintPlugins:
+    url: https://github.com/SimplyDanny/SwiftLintPlugins
+    exactVersion: 0.57.1
+  
+configs:
+  Development: debug
+  Production: release
+
+targets:
+  # Development
+  DigioAppDev:
+    type: application
+    platform: iOS
+    settings:
+      TARGETED_DEVICE_FAMILY: 1
+      ASSETCATALOG_COMPILER_APPICON_NAME: $(APP_ICON)
+      PRODUCT_NAME: $(PRODUCT_NAME)
+      ONLY_ACTIVE_ARCH: YES
+      DEVELOPMENT_TEAM: $(DEVELOPMENT_TEAM)
+      CODE_SIGN_IDENTITY: iPhone Distribution
+      CODE_SIGN_STYLE: Manual
+      PROVISIONING_PROFILE_SPECIFIER: $(PROVISIONING_PROFILE_SPECIFIER)
+      SWIFT_VERSION: $(SWIFT_VERSION)
+      DEBUG_INFORMATION_FORMAT: $(DEBUG_INFORMATION_FORMAT)
+      CURRENT_PROJECT_VERSION: $(CURRENT_PROJECT_VERSION)
+      OTHER_LDFLAGS: ["$(inherited)", -ObjC]
+    sources:
+      - path: DigioApp
+    configFiles:
+      Development: DigioApp/Root/Config/dev.xcconfig
+      Production: DigioApp/Root/Config/prd.xcconfig
+    info:
+      path: DigioApp/Root/Config/Info.plist
+      properties:
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleIdentifier: $(PRODUCT_BUNDLE_IDENTIFIER)
+        CFBundleDisplayName: $(APP_DISPLAY_NAME)
+        ITSAppUsesNonExemptEncryption: NO
+        UIStatusBarStyle: UIStatusBarStyleLightContent
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UILaunchStoryboardName: LaunchScreen
+        UIUserInterfaceStyle: Light
+        UIViewControllerBasedStatusBarAppearance: YES
+        UIRequiredDeviceCapabilities: [armv7]
+        LSRequiresIPhoneOS: YES
+    dependencies:
+      - package: AppProtocols
+      - package: DesignSystem
+      - package: NetworkKit
+
+    postBuildScripts:
+      - name: SwiftLint
+        script: |
+                SWIFT_PACKAGE_DIR="${BUILD_DIR%Build/*}SourcePackages/artifacts"
+                SWIFTLINT_CMD=$(ls "$SWIFT_PACKAGE_DIR"/swiftlintplugins/SwiftLintBinary/SwiftLintBinary.artifactbundle/swiftlint-*/bin/swiftlint | head -n 1)
+
+                if test -f "$SWIFTLINT_CMD" 2>&1
+                then
+                    "$SWIFTLINT_CMD"
+                    touch "${DERIVED_FILE_DIR}/swiftlint_output.txt"
+                else
+                    echo "warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions."
+                fi
+        outputFiles:
+          - "${DERIVED_FILE_DIR}/swiftlint_output.txt"
+
+  # DigioAppTests
+  DigioAppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: DigioAppTests
+    settings:
+      TARGETED_DEVICE_FAMILY: 1
+      SWIFT_VERSION: $(SWIFT_VERSION)
+      DEVELOPMENT_TEAM: $(DEVELOPMENT_TEAM)
+      PRODUCT_BUNDLE_IDENTIFIER: $(PRODUCT_BUNDLE_IDENTIFIER_TEST)
+      CODE_SIGN_STYLE: Manual
+    info:
+      path: DigioAppTests/Info.plist
+    dependencies:
+      - target: DigioAppDev
+      - package: Mocker
+
+schemes:
+  Development:
+    run:
+      config: Development
+    archive:
+      config: Development
+    build:
+      targets:
+        DigioAppDev: all
+    test:
+      targets:
+        - name: DigioAppTests
+          parallelizable: true
+          randomExecutionOrder: true
+  # Production:
+  #   run:
+  #     config: Production
+  #   archive:
+  #     config: Production
+  #   build:
+  #     targets:
+  #       DigioApp: all

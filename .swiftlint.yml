@@ -1,0 +1,49 @@
+# Find all the available rules by running:
+# swiftlint rules
+
+disabled_rules: # rule identifiers to exclude from running
+  - trailing_whitespace
+  - colon
+  - identifier_name
+opt_in_rules: # some rules are only opt-in
+  - force_unwrapping
+  - force_cast
+  - force_try
+
+# configurable rules can be customized from this configuration file
+# binary rules can set their severity level
+
+force_unwrapping: warning
+force_cast: warning
+force_try: warning
+
+line_length:
+  warning: 220
+  error: 270
+  ignores_comments: true
+
+type_body_length:
+  - 300 # warning
+  - 400 # error
+
+# or they can set both explicitly
+file_length:
+  warning: 500
+  error: 1200
+# naming rules can set warnings/errors for min_length and max_length
+# additionally they can set excluded names
+
+function_body_length: 60
+large_tuple: # warn user when using 3 values in tuple, give error if there are 4
+   - 3
+   - 4
+   
+# naming rules can set warnings/errors for min_length and max_length
+# additionally they can set excluded names
+type_name:
+  min_length: 3 # only warning
+  max_length: # warning and error
+    warning: 45
+    error: 50
+  excluded: iPhone # excluded via string
+reporter: "xcode"
