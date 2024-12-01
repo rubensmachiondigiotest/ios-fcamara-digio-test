@@ -11,6 +11,7 @@ protocol HomeViewModelProtocol {
 
 protocol HomeViewModelDelegate: AnyObject {
     func didRefreshData()
+    func didLoadUserInformation(name: String)
 }
 
 enum HomeViewModelFactory {
@@ -37,11 +38,16 @@ final class HomeViewModel<Coordinator: HomeCoordinatorProtocol>: HomeViewModelPr
     func refreshData() {
         repository.getHomeData { [weak self] response, error in
             if let error = error {
-                // TODO: Show error
+                self?.response = nil
+                DispatchQueue.main.async {
+                    self?.delegate?.didRefreshData()
+                    self?.coordinator.showErrorMessage(error.localizedDescription)
+                }
                 return
             }
             self?.response = response
             self?.delegate?.didRefreshData()
+            self?.delegate?.didLoadUserInformation(name: "Maria")
         }
     }
     

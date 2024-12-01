@@ -41,7 +41,7 @@ fileprivate extension HomeRepositoryResponse {
                                               description: response.cash?.description ?? "")
         
         return [
-            HomeRepositoryResponse(sectionName: "spotlight",
+            HomeRepositoryResponse(sectionName: "",
                                    items: spotlight),
             HomeRepositoryResponse(sectionName: "digio Cash",
                                    items: [cash]),

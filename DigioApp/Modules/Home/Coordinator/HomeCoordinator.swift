@@ -1,7 +1,9 @@
 import UIKit
 import AppProtocols
 
-protocol HomeCoordinatorProtocol: CoordinatorProtocol where Event == HomeCoordinatorEvent { }
+protocol HomeCoordinatorProtocol: CoordinatorProtocol where Event == HomeCoordinatorEvent {
+    func showErrorMessage(_ message: String)
+}
 
 enum HomeCoordinatorEvent {
     case detail
@@ -27,5 +29,13 @@ final class HomeCoordinator<Coordinator: CoordinatorProtocol>: HomeCoordinatorPr
         case .detail:
             break
         }
+    }
+    
+    func showErrorMessage(_ message: String) {
+        let alert = UIAlertController(title: "Atenção",
+                                      message: message,
+                                      preferredStyle: .alert)
+        
+        navigation?.present(alert, animated: true)
     }
 }

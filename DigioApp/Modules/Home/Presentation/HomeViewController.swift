@@ -1,12 +1,17 @@
 import UIKit
+import DesignSystem
 
 final class HomeViewController: UIViewController {
     
     // MARK: - UI
     
+    private lazy var headerView = HomeHeaderView()
+    
     private lazy var tableView: UITableView = {
         let view = UITableView()
-        view.register(UITableViewCell.self, forCellReuseIdentifier: "id")
+        view.register(HomeBannerViewCell.self, forCellReuseIdentifier: HomeBannerViewCell.identifier)
+        view.register(HomeButtonViewCell.self, forCellReuseIdentifier: HomeButtonViewCell.identifierButtonCell)
+        view.separatorStyle = .none
         view.dataSource = self
         
         return view
@@ -30,23 +35,28 @@ final class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        viewModel.refreshData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        viewModel.refreshData()
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
-
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
+    }
 }
 
 extension HomeViewController: ViewConfiguration {
     func configViews() {
-        view.backgroundColor = .red
+        view.backgroundColor = Colors.Background.primaryBackground.uiColor
     }
     
     func buildViews() {
         [
+            headerView,
             tableView
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -56,14 +66,16 @@ extension HomeViewController: ViewConfiguration {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            
+            tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
     }
-    
-    
 }
 
 // MARK: - UITableViewDataSource
@@ -77,15 +89,34 @@ extension HomeViewController: UITableViewDataSource {
             return .init()
         }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "id", for: indexPath)
-        cell.textLabel?.text = item.sectionName
-        
-        return cell
+        if item.sectionName == "Produtos" {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeButtonViewCell.identifierButtonCell,
+                                                           for: indexPath) as? HomeButtonViewCell else {
+                return  .init()
+            }
+            cell.setData(item)
+            
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerViewCell.identifier,
+                                                           for: indexPath) as? HomeBannerViewCell else {
+                return .init()
+            }
+            cell.setData(item)
+            
+            return cell
+        }
     }
 }
 
 // MARK: - HomeViewModelDelegate
 extension HomeViewController: HomeViewModelDelegate {
+    func didLoadUserInformation(name: String) {
+        DispatchQueue.main.async { [weak self] in
+            self?.headerView.title = "Olá, \(name)"
+        }
+    }
+    
     func didRefreshData() {
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()

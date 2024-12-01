@@ -1,3 +1,4 @@
+@MainActor
 public protocol ViewConfiguration: AnyObject {
     func setupViews()
     func configViews()
