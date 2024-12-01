@@ -1,0 +1,24 @@
+{
+  "originHash" : "d69a29db2906cb3f15f31e16282fb574e3dd4422b4d328575343543fb975e506",
+  "pins" : [
+    {
+      "identity" : "mocker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/rubensmachion/Mocker",
+      "state" : {
+        "branch" : "master",
+        "revision" : "4cdf3d886000400bc51d494c8d2c223579d9f0d8"
+      }
+    },
+    {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "f9731bef175c3eea3a0ca960f1be78fcc2bc7853",
+        "version" : "0.57.1"
+      }
+    }
+  ],
+  "version" : 3
+}
