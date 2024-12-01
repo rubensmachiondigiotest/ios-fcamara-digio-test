@@ -16,4 +16,9 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .red
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.refreshData()
+    }
 }
