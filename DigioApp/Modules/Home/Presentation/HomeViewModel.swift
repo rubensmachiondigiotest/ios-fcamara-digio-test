@@ -1,5 +1,16 @@
+import Foundation
+
 protocol HomeViewModelProtocol {
+    
+    var delegate: HomeViewModelDelegate? { get set }
+    
     func refreshData()
+    func numberOfItems() -> Int
+    func itemAt(index: IndexPath) -> HomeRepositoryResponse?
+}
+
+protocol HomeViewModelDelegate: AnyObject {
+    func didRefreshData()
 }
 
 enum HomeViewModelFactory {
@@ -14,19 +25,35 @@ final class HomeViewModel<Coordinator: HomeCoordinatorProtocol>: HomeViewModelPr
     private let repository: HomeRepositoryProtocol
     private let coordinator: Coordinator
     
+    weak var delegate: HomeViewModelDelegate?
+    
+    private var response: [HomeRepositoryResponse]?
+    
     init(repository: HomeRepositoryProtocol, coordinator: Coordinator) {
         self.repository = repository
         self.coordinator = coordinator
     }
     
     func refreshData() {
-        repository.getHomeData { response, error in
+        repository.getHomeData { [weak self] response, error in
             if let error = error {
                 // TODO: Show error
                 return
             }
-            
-            print(response)
+            self?.response = response
+            self?.delegate?.didRefreshData()
         }
+    }
+    
+    func numberOfItems() -> Int {
+        response?.count ?? 0
+    }
+    
+    func itemAt(index: IndexPath) -> HomeRepositoryResponse? {
+        guard let data = response?[index.row] else {
+            return nil
+        }
+        
+        return data
     }
 }
