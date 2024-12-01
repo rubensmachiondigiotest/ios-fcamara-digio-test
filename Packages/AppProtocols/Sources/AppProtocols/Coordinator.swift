@@ -1,4 +1,4 @@
-protocol CoordinatorProtocol: AnyObject {
+public protocol CoordinatorProtocol: AnyObject {
     associatedtype Event
     
     func start()

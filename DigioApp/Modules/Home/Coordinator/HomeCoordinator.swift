@@ -1,4 +1,5 @@
 import UIKit
+import AppProtocols
 
 protocol HomeCoordinatorProtocol: CoordinatorProtocol where Event == HomeCoordinatorEvent { }
 
