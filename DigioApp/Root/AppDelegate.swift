@@ -13,9 +13,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        registerDependencies()
+        
         mainCoordinator = MainCoordinator()
         mainCoordinator?.start()
         
         return true
+    }
+    
+    private func registerDependencies() {
+        DependencyContainer {
+            Module {
+                NetworkManagerFactory.build() as NetworkProtocol
+            }
+        }.build()
     }
 }
