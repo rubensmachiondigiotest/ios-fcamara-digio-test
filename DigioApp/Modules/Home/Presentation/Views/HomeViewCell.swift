@@ -1,9 +1,19 @@
 import UIKit
 import DesignSystem
 
-final class HomeMenuViewCell: UITableViewCell {
+protocol HomeViewCellProtocol: UITableViewCell {
+    static var identifier: String { get }
     
-    static let identifier = String(describing: HomeMenuViewCell.self)
+    func setData(_ data: HomeRepositoryResponse)
+}
+
+extension HomeViewCellProtocol {
+    static var identifier: String {
+        return ""
+    }
+}
+
+open class HomeViewCell: UITableViewCell, HomeViewCellProtocol {
     
     // MARK: - UI
     
@@ -28,13 +38,18 @@ final class HomeMenuViewCell: UITableViewCell {
                                                        weight: .bold,
                                                        textColor: Colors.Neutral.primaryTextColor.uiColor)
     
-    private lazy var carouselView: HorizontalMenuView = {
-        let view = HorizontalMenuView()
-        view.backgroundColor = .groupTableViewBackground
-        view.heightAnchor.constraint(equalToConstant: 100.0).isActive = true
+    private lazy var listView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
+    
+    var title: String? {
+        didSet {
+            titleSectionLabel.text = title
+        }
+    }
     
     // MARK: - init
     
@@ -48,15 +63,21 @@ final class HomeMenuViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setData(_ data: HomeRepositoryResponse) {
-        titleSectionLabel.text = data.sectionName
-        let urlList = data.items.compactMap { $0.imageURL }
-        carouselView.setData(urlList: urlList)
+    func addListView(_ view: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        listView.addSubview(view)
+        
+        view.topAnchor.constraint(equalTo: listView.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: listView.bottomAnchor).isActive = true
+        view.leadingAnchor.constraint(equalTo: listView.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: listView.trailingAnchor).isActive = true
     }
+    
+    open func setData(_ data: HomeRepositoryResponse) { }
 }
 
 // MARK: - ViewConfiguration
-extension HomeMenuViewCell: ViewConfiguration {
+extension HomeViewCell: ViewConfiguration {
     public func configViews() {
         contentView.backgroundColor = Colors.Background.primaryBackground.uiColor
     }
@@ -65,7 +86,7 @@ extension HomeMenuViewCell: ViewConfiguration {
         titleContainerStack.addArrangedSubview(titleSectionLabel)
         
         vContainerStack.addArrangedSubview(titleContainerStack)
-        vContainerStack.addArrangedSubview(carouselView)
+        vContainerStack.addArrangedSubview(listView)
         
         contentView.addSubview(vContainerStack)
     }
@@ -75,7 +96,9 @@ extension HomeMenuViewCell: ViewConfiguration {
             vContainerStack.topAnchor.constraint(equalTo: contentView.topAnchor),
             vContainerStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             vContainerStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            vContainerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor)
+            vContainerStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            
+            listView.heightAnchor.constraint(equalToConstant: 180.0)
         ])
     }
 }

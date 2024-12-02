@@ -1,11 +1,11 @@
-struct HomeRepositoryResponse {
+public struct HomeRepositoryResponse {
     let sectionName: String
+    let identifier: String
     let items: [HomeRepositoryItemResponse]
 }
 
-struct HomeRepositoryItemResponse {
+public struct HomeRepositoryItemResponse {
     let name: String
     let imageURL: String
     let description: String
 }
-

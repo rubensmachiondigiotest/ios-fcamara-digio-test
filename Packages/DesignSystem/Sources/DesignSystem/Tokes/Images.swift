@@ -15,6 +15,7 @@ public struct Images {
     
     public enum Icon: String {
         case chevronLeft = "ic_chevron-left"
+        case noImage = "no_image"
         
         public var uiImage: UIImage {
             Images.uiImage(rawValue: rawValue)

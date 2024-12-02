@@ -42,10 +42,13 @@ fileprivate extension HomeRepositoryResponse {
         
         return [
             HomeRepositoryResponse(sectionName: "",
+                                   identifier: HomeBannerViewCell.identifier,
                                    items: spotlight),
             HomeRepositoryResponse(sectionName: "digio Cash",
+                                   identifier: HomeBannerViewCell.identifier,
                                    items: [cash]),
             HomeRepositoryResponse(sectionName: "Produtos",
+                                   identifier: HomeMenuViewCell.identifier,
                                    items: products)
         ]
     }

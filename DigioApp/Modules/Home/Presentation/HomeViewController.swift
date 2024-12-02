@@ -10,7 +10,7 @@ final class HomeViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let view = UITableView()
         view.register(HomeBannerViewCell.self, forCellReuseIdentifier: HomeBannerViewCell.identifier)
-        view.register(HomeButtonViewCell.self, forCellReuseIdentifier: HomeButtonViewCell.identifierButtonCell)
+        view.register(HomeMenuViewCell.self, forCellReuseIdentifier: HomeMenuViewCell.identifier)
         view.separatorStyle = .none
         view.dataSource = self
         
@@ -89,23 +89,13 @@ extension HomeViewController: UITableViewDataSource {
             return .init()
         }
         
-        if item.sectionName == "Produtos" {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeButtonViewCell.identifierButtonCell,
-                                                           for: indexPath) as? HomeButtonViewCell else {
-                return  .init()
-            }
-            cell.setData(item)
-            
-            return cell
-        } else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeBannerViewCell.identifier,
-                                                           for: indexPath) as? HomeBannerViewCell else {
-                return .init()
-            }
-            cell.setData(item)
-            
-            return cell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: item.identifier, for: indexPath) as? HomeViewCellProtocol else {
+            return .init()
         }
+        
+        cell.setData(item)
+        
+        return cell
     }
 }
 
