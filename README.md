@@ -9,7 +9,7 @@
 - Swiftlint [ver](https://github.com/realm/SwiftLint)
 
 ## Instalação
-Antes de rodar o projeto instale o [Xcodegen](https://github.com/yonaskolb/XcodeGen), para gerar o arquivo `DigioApp.xcodeproj` e opcionalmente instale o [Swiftlint](https://github.com/realm/SwiftLint). Após instalado o Xcodegen abra o terminal e navegue até a pasta do projeto clonado e e rode o comando `xcodegen`. Agora já será possível abrir o projeto. `open DigioApp.xcodeproj`
+Antes de rodar o projeto instale o [Xcodegen](https://github.com/yonaskolb/XcodeGen), para gerar o arquivo `DigioApp.xcodeproj` e opcionalmente instale o [Swiftlint](https://github.com/realm/SwiftLint). Após instalado o Xcodegen abra o terminal e navegue até a pasta do projeto clonado e rode o comando `xcodegen`. Agora já será possível abrir o projeto. `open DigioApp.xcodeproj`
 
 ## Dependências
 Este projeto possui dependências locais, localizado na pasta `Packages`, e dependências externas instaladas via swiftPackage.
@@ -32,7 +32,7 @@ Pasta responsável pela centralização de algumas extensões, injeção de depe
 Contém o `AppDelegate`, os xcconfigs para os ambientes, `LaunchScreen` e Assets.
 
 ### Modules
-Aqui é listados todos os módulos do app, como Home e produtos
+Aqui são listados todos os módulos do app, como Home e produtos
 
 ## Overview
 O projeto foi desenvolvido com uma variação do Clean Arch com o Design pattern `MVVM-C`. A navegação entre módulos é feita através do `MainCoordinator` que este por sua vez instancia o coordinator de cada módulo. Esta separação foi pensada para evitar que o `MainCoordinator` atingisse um tamanho muito grande conforme o app evolui.
