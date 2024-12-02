@@ -59,9 +59,11 @@ private final class HomeRepositorySpy: HomeRepositoryProtocol {
         }
         
         let data: [HomeRepositoryResponse] = [
-            .init(sectionName: "SectioName", items: [.init(name: "item1",
-                                                           imageURL: "item1",
-                                                           description: "item1")])
+            .init(sectionName: "SectioName",
+                  identifier: "section1",
+                  items: [.init(name: "item1",
+                                imageURL: "item1",
+                                description: "item1")])
         ]
         completion(data, nil)
     }
