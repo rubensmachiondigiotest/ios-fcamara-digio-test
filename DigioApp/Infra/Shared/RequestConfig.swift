@@ -2,7 +2,6 @@ import Foundation
 import AppProtocols
 
 struct RequestConfig: RequestProtocol {
-    // https://7hgi9vtkdc.execute-api.sa-east-1.amazonaws.com/sandbox/products
     var sheme: String = "https"
     var host: String = "7hgi9vtkdc.execute-api.sa-east-1.amazonaws.com"
     var port: Int?
