@@ -2,7 +2,7 @@ import Foundation
 
 extension Dictionary {
     
-    mutating func append(with: Dictionary<Key, Value>) {
+    mutating func append(with: [Key: Value]) {
         for (k, v) in with {
             self[k] = v
         }
@@ -16,8 +16,7 @@ extension Dictionary {
                     if let dictionary = value as? Dictionary {
                         return queryString(dictionary)
                     }
-                }
-                else {
+                } else {
                     return "\(key)=\(value)"
                 }
                 

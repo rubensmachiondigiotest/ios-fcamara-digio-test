@@ -15,9 +15,9 @@ packages:
   Mocker:
     url: https://github.com/rubensmachion/Mocker
     branch: master
-  SwiftLintPlugins:
-    url: https://github.com/SimplyDanny/SwiftLintPlugins
-    exactVersion: 0.57.1
+  # SwiftLintPlugins:
+  #   url: https://github.com/SimplyDanny/SwiftLintPlugins
+  #   exactVersion: 0.57.1
   
 configs:
   Development: debug
@@ -69,13 +69,14 @@ targets:
     postBuildScripts:
       - name: SwiftLint
         script: |
-                SWIFT_PACKAGE_DIR="${BUILD_DIR%Build/*}SourcePackages/artifacts"
-                SWIFTLINT_CMD=$(ls "$SWIFT_PACKAGE_DIR"/swiftlintplugins/SwiftLintBinary/SwiftLintBinary.artifactbundle/swiftlint-*/bin/swiftlint | head -n 1)
-
-                if test -f "$SWIFTLINT_CMD" 2>&1
+                if [[ "$(uname -m)" == arm64 ]]
                 then
-                    "$SWIFTLINT_CMD"
-                    touch "${DERIVED_FILE_DIR}/swiftlint_output.txt"
+                    export PATH="/opt/homebrew/bin:$PATH"
+                fi
+
+                if command -v swiftlint >/dev/null 2>&1
+                then
+                    swiftlint
                 else
                     echo "warning: `swiftlint` command not found - See https://github.com/realm/SwiftLint#installation for installation instructions."
                 fi
@@ -114,11 +115,3 @@ schemes:
         - name: DigioAppTests
           parallelizable: true
           randomExecutionOrder: true
-  # Production:
-  #   run:
-  #     config: Production
-  #   archive:
-  #     config: Production
-  #   build:
-  #     targets:
-  #       DigioApp: all

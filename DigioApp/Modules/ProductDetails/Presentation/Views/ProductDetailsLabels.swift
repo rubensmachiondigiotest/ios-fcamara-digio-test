@@ -13,7 +13,6 @@ final class ProductDetailsLabels: UIStackView {
                                                    weight: .regular,
                                                    textColor: .darkGray)
 
-    
     var title: String? {
         didSet {
             titleLabel.text = title

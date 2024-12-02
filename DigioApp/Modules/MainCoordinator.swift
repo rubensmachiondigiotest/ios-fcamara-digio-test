@@ -1,13 +1,13 @@
 import UIKit
 import AppProtocols
 
-protocol MainCoordinatorProtocol: CoordinatorProtocol where Event == MainCoordinatorEvent { }
+protocol MainCoordinatorProtocol: AnyObject, CoordinatorProtocol where Event == MainCoordinatorEvent { }
 
 enum MainCoordinatorEvent {
     case productDetail(image: String, name: String, description: String)
 }
 
-final class MainCoordinator: AnyObject, MainCoordinatorProtocol {
+final class MainCoordinator: MainCoordinatorProtocol {
     
     private lazy var window: UIWindow = UIWindow(frame: UIScreen.main.bounds)
     private let navigation: UINavigationController = .init()

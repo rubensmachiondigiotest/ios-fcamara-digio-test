@@ -21,7 +21,7 @@ final class NetworkManager: NetworkProtocol {
             return
         }
         
-        let task = urlSession.dataTask(with: urlRequest) { data, urlResponse, error in
+        let task = urlSession.dataTask(with: urlRequest) { data, _, error in
             if let error = error {
                 print("Erro de rede: \(error.localizedDescription)")
                 completion(.failure(.business))

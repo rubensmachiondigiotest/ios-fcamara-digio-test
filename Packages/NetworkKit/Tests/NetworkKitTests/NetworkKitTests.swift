@@ -43,12 +43,12 @@ final class NetworkManagerTests: XCTestCase {
     }
 }
 
-fileprivate struct MockResponseSpy: Codable, Equatable {
+private struct MockResponseSpy: Codable, Equatable {
     let param1: String
     let param2: String
 }
 
-fileprivate struct RequestConfigSpy: RequestProtocol {
+private struct RequestConfigSpy: RequestProtocol {
     var sheme: String = "https"
     var host: String = "validurl.com"
     var port: Int?

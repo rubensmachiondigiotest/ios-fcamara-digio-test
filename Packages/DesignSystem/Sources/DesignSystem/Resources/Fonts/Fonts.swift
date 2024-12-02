@@ -1,11 +1,5 @@
 import UIKit
 
-//public enum Fonts: String {
-//    case regular = "SFProDisplay-Regular"
-//    case bold = "SFProDisplay-Bold"
-//    case semiBold = "SFProDisplay-Semibold"
-//}
-
 public enum FontWeight {
     case bold,
          regular,

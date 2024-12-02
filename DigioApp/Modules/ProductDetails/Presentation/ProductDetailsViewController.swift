@@ -66,7 +66,7 @@ extension ProductDetailsViewController: ViewConfiguration {
             nameLabel,
             descrLabel,
             UIView()
-        ].forEach{
+        ].forEach {
             vContainerStackView.addArrangedSubview($0)
         }
         
