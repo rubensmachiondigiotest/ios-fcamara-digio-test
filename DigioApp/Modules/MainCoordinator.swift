@@ -4,7 +4,7 @@ import AppProtocols
 protocol MainCoordinatorProtocol: CoordinatorProtocol where Event == MainCoordinatorEvent { }
 
 enum MainCoordinatorEvent {
-    case productDetail
+    case productDetail(image: String, name: String, description: String)
 }
 
 final class MainCoordinator: AnyObject, MainCoordinatorProtocol {
@@ -26,8 +26,13 @@ final class MainCoordinator: AnyObject, MainCoordinatorProtocol {
     
     func handle(event: MainCoordinatorEvent) {
         switch event {
-        case .productDetail:
-            print(event)
+        case .productDetail(let image, let name, let description):
+            let coordinator = ProductDetailsCoordinator(mainCoordinator: self,
+                                                        navigation: navigation,
+                                                        image: image,
+                                                        name: name,
+                                                        description: description)
+            coordinator.start()
         }
     }
 }

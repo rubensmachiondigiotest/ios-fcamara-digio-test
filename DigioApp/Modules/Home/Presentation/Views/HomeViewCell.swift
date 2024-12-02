@@ -4,7 +4,7 @@ import DesignSystem
 protocol HomeViewCellProtocol: UITableViewCell {
     static var identifier: String { get }
     
-    func setData(_ data: HomeRepositoryResponse)
+    func setData(_ data: HomeRepositoryResponse, selectItem: @escaping ((Int) -> Void))
 }
 
 extension HomeViewCellProtocol {
@@ -73,7 +73,7 @@ open class HomeViewCell: UITableViewCell, HomeViewCellProtocol {
         view.trailingAnchor.constraint(equalTo: listView.trailingAnchor).isActive = true
     }
     
-    open func setData(_ data: HomeRepositoryResponse) { }
+    open func setData(_ data: HomeRepositoryResponse, selectItem: @escaping ((Int) -> Void)) { }
 }
 
 // MARK: - ViewConfiguration

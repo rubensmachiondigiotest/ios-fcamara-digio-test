@@ -7,6 +7,7 @@ protocol HomeViewModelProtocol {
     func refreshData()
     func numberOfItems() -> Int
     func itemAt(index: IndexPath) -> HomeRepositoryResponse?
+    func selectItemAt(index: Int, sectionName: String)
 }
 
 protocol HomeViewModelDelegate: AnyObject {
@@ -61,5 +62,16 @@ final class HomeViewModel<Coordinator: HomeCoordinatorProtocol>: HomeViewModelPr
         }
         
         return data
+    }
+    
+    func selectItemAt(index: Int, sectionName: String) {
+        print("\(index), \(sectionName)")
+        guard let sectionIndex = response?.firstIndex(where: { $0.sectionName == sectionName }) else { return }
+        guard let list = response?[sectionIndex].items else { return }
+        let item = list[index]
+        print(item)
+        coordinator.handle(event: .detail(image: item.imageURL,
+                                          name: item.name,
+                                          description: item.description))
     }
 }

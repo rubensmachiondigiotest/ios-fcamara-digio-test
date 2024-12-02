@@ -6,10 +6,10 @@ protocol HomeCoordinatorProtocol: CoordinatorProtocol where Event == HomeCoordin
 }
 
 enum HomeCoordinatorEvent {
-    case detail
+    case detail(image: String, name: String, description: String)
 }
 
-final class HomeCoordinator<Coordinator: CoordinatorProtocol>: HomeCoordinatorProtocol {
+final class HomeCoordinator<Coordinator: MainCoordinatorProtocol>: HomeCoordinatorProtocol {
     
     private weak var mainCoordinator: Coordinator?
     private weak var navigation: UINavigationController?
@@ -26,8 +26,10 @@ final class HomeCoordinator<Coordinator: CoordinatorProtocol>: HomeCoordinatorPr
     
     func handle(event: HomeCoordinatorEvent) {
         switch event {
-        case .detail:
-            break
+        case .detail(let image, let name, let description):
+            mainCoordinator?.handle(event: .productDetail(image: image,
+                                                          name: name,
+                                                          description: description))
         }
     }
     

@@ -85,15 +85,18 @@ extension HomeViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let item = viewModel.itemAt(index: indexPath) else {
+        guard let data = viewModel.itemAt(index: indexPath) else {
             return .init()
         }
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: item.identifier, for: indexPath) as? HomeViewCellProtocol else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: data.identifier,
+                                                       for: indexPath) as? HomeViewCellProtocol else {
             return .init()
         }
         
-        cell.setData(item)
+        cell.setData(data) { [weak self] index in
+            self?.viewModel.selectItemAt(index: index, sectionName: data.sectionName)
+        }
         
         return cell
     }

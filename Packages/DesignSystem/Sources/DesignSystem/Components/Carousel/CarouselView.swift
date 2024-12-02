@@ -1,7 +1,7 @@
 import UIKit
 
 public protocol CarouselViewDelegate: AnyObject {
-    func didSelectIndex(_ index: IndexPath)
+    func didSelectIndex(_ index: Int)
 }
 
 public final class CarouselView: UIView {
@@ -81,7 +81,7 @@ extension CarouselView: ViewConfiguration {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension CarouselView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didSelectIndex(indexPath)
+        delegate?.didSelectIndex(indexPath.item)
     }
 }
 

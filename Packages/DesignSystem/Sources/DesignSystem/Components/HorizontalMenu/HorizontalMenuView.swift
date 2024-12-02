@@ -1,7 +1,7 @@
 import UIKit
 
 public protocol HorizontalMenuViewDelegate: AnyObject {
-    func didSelectIndex(_ index: IndexPath)
+    func didSelectIndex(_ index: Int)
 }
 
 public final class HorizontalMenuView: UIView {
@@ -81,7 +81,7 @@ extension HorizontalMenuView: ViewConfiguration {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegate
 extension HorizontalMenuView: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        delegate?.didSelectIndex(indexPath)
+        delegate?.didSelectIndex(indexPath.item)
     }
 }
 

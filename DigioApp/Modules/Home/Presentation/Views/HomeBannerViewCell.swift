@@ -5,6 +5,8 @@ final class HomeBannerViewCell: HomeViewCell {
     
     static let identifier = String(describing: HomeBannerViewCell.self)
     
+    private var selectItem: ((Int) -> Void)?
+    
     private lazy var carouselView: CarouselView = {
         let view = CarouselView(itemSize: self.itemSize)
         view.backgroundColor = .groupTableViewBackground
@@ -22,8 +24,10 @@ final class HomeBannerViewCell: HomeViewCell {
         return size
     }
     
-    override func setData(_ data: HomeRepositoryResponse) {
+    override func setData(_ data: HomeRepositoryResponse,
+                          selectItem: @escaping ((Int) -> Void)) {
         addListView(carouselView)
+        self.selectItem = selectItem
         
         super.title = data.sectionName
         let urlList = data.items.compactMap { $0.imageURL }
@@ -34,7 +38,7 @@ final class HomeBannerViewCell: HomeViewCell {
 
 // MARK: - CarouselViewDelegate
 extension HomeBannerViewCell: CarouselViewDelegate {
-    public func didSelectIndex(_ index: IndexPath) {
-        print(index)
+    public func didSelectIndex(_ index: Int) {
+        selectItem?(index)
     }
 }
